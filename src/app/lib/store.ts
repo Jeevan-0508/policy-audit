@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { AuditResult } from '@core/engine/audit';
 import { runAudit } from '@core/engine/audit';
 import { ingestFile, UnsupportedFileError, FileTooLargeError, type IngestResult } from '@core/parsers';
+import { buildDemoFiles } from '@core/demo/corpus';
 import type { FrameworkId } from '@core/types';
 
 export interface UploadError {
@@ -18,6 +19,7 @@ interface AuditStore {
   addFiles: (files: FileList | File[]) => Promise<void>;
   removeDocument: (documentId: string) => void;
   runAuditNow: () => void;
+  loadDemoCorpus: () => Promise<void>;
   reset: () => void;
   setSelectedFrameworks: (fw: FrameworkId[] | undefined) => void;
 }
@@ -60,6 +62,18 @@ export const useAuditStore = create<AuditStore>((set, get) => ({
     if (ingested.length === 0) return;
     set({ status: 'auditing' });
     const result = runAudit(ingested, selectedFrameworks);
+    set({ result, status: 'done' });
+  },
+
+  loadDemoCorpus: async () => {
+    set({ ingested: [], uploadErrors: [], result: null, status: 'ingesting' });
+    const files = buildDemoFiles();
+    const ingested: IngestResult[] = [];
+    for (const file of files) {
+      ingested.push(await ingestFile(file));
+    }
+    set({ ingested, status: 'auditing' });
+    const result = runAudit(ingested, get().selectedFrameworks);
     set({ result, status: 'done' });
   },
 

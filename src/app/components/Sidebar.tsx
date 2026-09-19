@@ -16,7 +16,7 @@ const NAV_ITEMS: { to: string; label: string }[] = [
 
 export function Sidebar() {
   return (
-    <aside className="w-60 shrink-0 border-r border-line bg-ink-800 flex flex-col">
+    <aside className="w-60 shrink-0 border-r border-line bg-ink-800 flex flex-col no-print">
       <div className="px-5 py-5 border-b border-line">
         <div className="font-mono text-lg font-bold tracking-tight text-fg">POLICY//AUDIT</div>
         <div className="text-2xs text-fg-mute mt-1 leading-tight">

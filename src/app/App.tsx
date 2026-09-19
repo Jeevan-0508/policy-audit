@@ -9,7 +9,8 @@ import { Contradictions } from './screens/Contradictions';
 import { Requirements } from './screens/Requirements';
 import { Frameworks } from './screens/Frameworks';
 import { AgentGovernance } from './screens/AgentGovernance';
-import { ComingSoon } from './screens/ComingSoon';
+import { TechnicalTranslation } from './screens/TechnicalTranslation';
+import { Reports } from './screens/Reports';
 
 export default function App() {
   return (
@@ -26,14 +27,8 @@ export default function App() {
           <Route path="/requirements" element={<Requirements />} />
           <Route path="/frameworks" element={<Frameworks />} />
           <Route path="/agent-governance" element={<AgentGovernance />} />
-          <Route
-            path="/technical-translation"
-            element={<ComingSoon title="Technical Translation" note="Regulation -> Control -> Technical Control -> Validation Method view is planned for the next slice." />}
-          />
-          <Route
-            path="/reports"
-            element={<ComingSoon title="Audit Report" note="Full exportable HTML/PDF audit report generation is planned for the next slice." />}
-          />
+          <Route path="/technical-translation" element={<TechnicalTranslation />} />
+          <Route path="/reports" element={<Reports />} />
         </Routes>
       </main>
     </div>

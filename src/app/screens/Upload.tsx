@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuditStore } from '../lib/store';
 
 export function Upload() {
-  const { ingested, uploadErrors, status, addFiles, removeDocument, runAuditNow } = useAuditStore();
+  const { ingested, uploadErrors, status, addFiles, removeDocument, runAuditNow, loadDemoCorpus } = useAuditStore();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -14,6 +14,25 @@ export function Upload() {
         PDF, DOCX, XLSX, CSV, TXT, MD, JSON, YAML. Parsing happens in your browser &mdash; nothing is
         uploaded anywhere unless you explicitly enable an optional LLM provider (not yet wired in this build).
       </p>
+
+      <div className="mb-6 border border-line rounded-md bg-ink-800 p-4 flex items-center justify-between gap-4">
+        <div>
+          <div className="text-sm font-medium">No documents to upload yet?</div>
+          <div className="text-2xs text-fg-mute mt-0.5">
+            Load a sample governance corpus for a fictional claims-processing agent and see the full
+            audit in one click, including a real contradiction and a real policy/implementation gap.
+          </div>
+        </div>
+        <button
+          className="mono text-2xs px-4 py-2 rounded border border-accent text-accent hover:bg-accent/10 whitespace-nowrap disabled:opacity-40"
+          disabled={status === 'ingesting' || status === 'auditing'}
+          onClick={() => {
+            void loadDemoCorpus().then(() => navigate('/'));
+          }}
+        >
+          LOAD DEMO CORPUS
+        </button>
+      </div>
 
       <div
         className="border border-dashed border-line rounded-md py-12 flex flex-col items-center gap-3 cursor-pointer hover:border-accent/60"

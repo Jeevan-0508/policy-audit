@@ -4,7 +4,7 @@ import { StatCard, EmptyState } from '../components/StatCard';
 import { FRAMEWORK_META } from '@core/frameworks';
 
 export function Overview() {
-  const { result, ingested } = useAuditStore();
+  const { result, ingested, loadDemoCorpus, status } = useAuditStore();
 
   if (!result) {
     return (
@@ -15,9 +15,18 @@ export function Overview() {
           title={ingested.length > 0 ? `${ingested.length} document(s) staged, audit not run yet` : 'No audit run yet'}
           body="Upload AI governance policies, architecture docs, SOPs, or agent config, then run the audit to see requirement coverage, findings, contradictions and gaps traced back to exact source evidence."
           action={
-            <Link to="/upload" className="mono text-sm px-4 py-2 rounded border border-accent text-accent hover:bg-accent/10">
-              Upload Documents
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link to="/upload" className="mono text-sm px-4 py-2 rounded border border-accent text-accent hover:bg-accent/10">
+                Upload Documents
+              </Link>
+              <button
+                className="mono text-sm px-4 py-2 rounded border border-line text-fg-dim hover:border-accent/60 hover:text-fg disabled:opacity-40"
+                disabled={status === 'ingesting' || status === 'auditing'}
+                onClick={() => void loadDemoCorpus()}
+              >
+                Load Demo Corpus
+              </button>
+            </div>
           }
         />
       </div>
