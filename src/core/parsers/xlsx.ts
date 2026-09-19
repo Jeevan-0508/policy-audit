@@ -1,4 +1,3 @@
-import * as XLSX from 'xlsx';
 import type { EvidenceChunk } from '../types';
 import { nextId } from '../engine/ids';
 
@@ -6,6 +5,7 @@ import { nextId } from '../engine/ids';
  * `sheet + row` provenance — the same shape as the CSV parser, so an
  * XLSX evidence register behaves identically regardless of format. */
 export async function parseXlsxFile(file: File, documentId: string): Promise<EvidenceChunk[]> {
+  const XLSX = await import('xlsx');
   const buf = await file.arrayBuffer();
   const workbook = XLSX.read(buf, { type: 'array' });
   const chunks: EvidenceChunk[] = [];

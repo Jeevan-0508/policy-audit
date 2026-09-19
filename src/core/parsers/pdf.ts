@@ -1,17 +1,19 @@
-import * as pdfjsLib from 'pdfjs-dist';
 import type { EvidenceChunk } from '../types';
 import { chunkParagraphs } from './chunk';
 
 let workerConfigured = false;
-function ensureWorker(): void {
-  if (workerConfigured) return;
-  const base = import.meta.env.BASE_URL ?? '/';
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `${base}vendor/pdf.worker.min.mjs`;
-  workerConfigured = true;
+async function loadPdfJs() {
+  const pdfjsLib = await import('pdfjs-dist');
+  if (!workerConfigured) {
+    const base = import.meta.env.BASE_URL ?? '/';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `${base}vendor/pdf.worker.min.mjs`;
+    workerConfigured = true;
+  }
+  return pdfjsLib;
 }
 
 export async function parsePdfFile(file: File, documentId: string): Promise<{ chunks: EvidenceChunk[]; pageCount: number }> {
-  ensureWorker();
+  const pdfjsLib = await loadPdfJs();
   const buf = await file.arrayBuffer();
   const doc = await pdfjsLib.getDocument({ data: buf }).promise;
   const allChunks: EvidenceChunk[] = [];
