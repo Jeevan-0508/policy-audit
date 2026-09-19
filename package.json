@@ -1,0 +1,43 @@
+{
+  "name": "policy-audit",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "description": "POLICY//AUDIT - AI governance document & evidence auditing engine. Regulation -> control -> implementation -> evidence -> gap.",
+  "scripts": {
+    "demo:build": "node scripts/generate-nova-demo.mjs",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "typecheck": "tsc -b --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0",
+    "zustand": "^5.0.0",
+    "pdfjs-dist": "^4.7.76",
+    "mammoth": "^1.8.0",
+    "xlsx": "^0.18.5",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.2",
+    "@types/node": "^22.7.0",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@types/js-yaml": "^4.0.9",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "docx": "^9.0.2",
+    "pdf-lib": "^1.17.1",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vite-plugin-static-copy": "^2.0.0"
+  }
+}
