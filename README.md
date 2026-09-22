@@ -1,3 +1,7 @@
+<p align="center"><img src="assets/jk-brand-banner.png" alt="Jeevan Siddhabhaktula: Risk. Governance. AI." width="280"></p>
+
+<div align="center">
+
 # POLICY//AUDIT
 
 **Your AI governance policy says one thing. Your architecture says another. Your audit evidence says
@@ -5,17 +9,14 @@ nothing. POLICY//AUDIT finds the gap.**
 
 Upload the evidence. Find what your AI governance is missing.
 
-> Translate regulation into controls. Controls into evidence. Evidence into findings.
+*Translate regulation into controls. Controls into evidence. Evidence into findings.*
 
-![Status](https://img.shields.io/badge/status-active-brightgreen)
-![Client-side only](https://img.shields.io/badge/backend-none-blue)
-![Tests](https://img.shields.io/badge/tests-11%2F11-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-jeevan--0508.github.io-38bdf8?style=for-the-badge)](https://jeevan-0508.github.io/policy-audit/)
+[![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](#license)
+[![Tests](https://img.shields.io/badge/Tests-12%2F12_passing-22c55e?style=for-the-badge)](src/core)
+[![Stack](https://img.shields.io/badge/Stack-Client--side%20Only%20%7C%20TypeScript-818cf8?style=for-the-badge)](#architecture)
 
-| | |
-|---|---|
-| **LIVE DEMO** | [jeevan-0508.github.io/policy-audit](https://jeevan-0508.github.io/policy-audit/) |
-| **SOURCE** | [github.com/Jeevan-0508/policy-audit](https://github.com/Jeevan-0508/policy-audit) |
+</div>
 
 ---
 
@@ -46,9 +47,51 @@ feature: documents are parsed and analyzed entirely in your browser (pdf.js, mam
 so **nothing leaves your machine** unless you explicitly wire in an external LLM key (not required, and
 not included in this build).
 
-```
-src/core     - pure TypeScript engine (frameworks, parsers, extraction, findings). bun test covers it.
-src/app      - React UI that reads from src/core and renders it. Zero findings are hardcoded here.
+```mermaid
+flowchart TD
+    subgraph PARSE["src/core/parsers/"]
+        P["pdf.js · mammoth (docx) · SheetJS (xlsx/csv) · text
+chunk.ts splits into citable passages"]
+    end
+
+    subgraph EXTRACT["src/core/extraction/"]
+        C["classify.ts + patterns.ts
+deterministic: no LLM verdicts"]
+    end
+
+    subgraph FRAMEWORKS["src/core/frameworks/"]
+        FW["eu-ai-act · nist-ai-rmf · iso-42001 · iso-23894
+ai-security · agent-governance · controls.ts (24-control crosswalk)"]
+    end
+
+    subgraph ENGINE["src/core/engine/"]
+        M["match.ts
+requirement <-> evidence"]
+        COV["coverage.ts"]
+        SEV["severity.ts"]
+        CT["contradiction.ts
+policy vs. implementation"]
+        IG["implementationGap.ts"]
+        AG["agentGovernance.ts
+kill-switch / oversight profile"]
+        F["findings.ts
+supported / partial / missing"]
+    end
+
+    subgraph APP["src/app/"]
+        UI["React screens, zero hardcoded findings
+reads only from src/core"]
+    end
+
+    P --> C --> FW --> M --> COV
+    M --> SEV
+    M --> CT --> IG
+    M --> AG
+    COV --> F
+    SEV --> F
+    IG --> F
+    AG --> F
+    F --> UI
 ```
 
 The engine follows one hard rule: **a language model never determines a verdict.** Classification,
