@@ -167,7 +167,7 @@ the evidence model before the finding engine, the finding engine before the UI.
 provenance, deterministic classification, requirement matching, coverage findings, contradiction
 detection, policy/implementation gap detection, agent governance profiling, transparent risk scoring,
 Overview/Upload/Documents/Evidence/Findings/Contradictions/Requirements/Frameworks/Agent Governance
-screens, 11/11 tests.
+screens, 12/12 tests.
 
 **Not yet built:** a bundled golden demo corpus, the Technical Translation screen, exportable audit
 report generation, and an optional BYOK LLM enhancement layer. These are the next slices.
