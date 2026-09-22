@@ -172,6 +172,14 @@ screens, 12/12 tests.
 **Not yet built:** a bundled golden demo corpus, the Technical Translation screen, exportable audit
 report generation, and an optional BYOK LLM enhancement layer. These are the next slices.
 
+## Related Projects
+
+POLICY//AUDIT is the evidence/document auditing engine in a small governance cluster; each project has a distinct scope:
+
+- [EU AI Act Scanner](https://github.com/Jeevan-0508/eu-ai-act-scanner), [GDPR Compliance Scanner](https://github.com/Jeevan-0508/gdpr-compliance-scanner), [DORA Compliance Scanner](https://github.com/Jeevan-0508/dora-compliance-scanner) - regulation-specific self-assessment tools
+- [AI Governance Control Room](https://github.com/Jeevan-0508/ai-governance-control-room) - cross-framework governance operating system
+- **POLICY//AUDIT (this repo)** - takes an evidence corpus and finds where documented policy/architecture diverges from what's actually implemented
+
 ## Limitations
 
 POLICY//AUDIT is an engineering and governance assessment tool. **It does not provide legal advice and
