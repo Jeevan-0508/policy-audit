@@ -15,7 +15,6 @@ function chunk(text: string, documentId: string, documentName: string, extra: Pa
     documentId,
     documentName,
     text,
-    extractionConfidence: 0.95,
     extractedAt: new Date().toISOString(),
     ...extra,
   };
@@ -28,7 +27,7 @@ describe('classification', () => {
       'pdf'
     );
     expect(ev.controlIds).toContain('human-oversight');
-    expect(ev.confidence).toBeGreaterThan(0.5);
+    expect(ev.classificationMethod).toBe('deterministic');
   });
 });
 
@@ -136,6 +135,8 @@ describe('implementation gap engine', () => {
     const gaps = detectImplementationGaps([...policyEvidence, ...configEvidence]);
     expect(gaps.length).toBeGreaterThan(0);
     expect(gaps[0].type).toBe('IMPLEMENTATION_GAP');
+    expect(gaps[0].title).toContain('Potential policy/configuration conflict');
+    expect(gaps[0].reasoning).toContain('Review whether these refer to the same resource');
     expect(gaps[0].severity).toBe('CRITICAL');
   });
 

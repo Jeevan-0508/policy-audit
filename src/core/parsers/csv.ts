@@ -44,7 +44,6 @@ export async function parseCsvFile(file: File, documentId: string): Promise<Evid
       section: 'CSV Row',
       paragraphRef: `row ${i + 1}`,
       text,
-      extractionConfidence: 0.99,
       extractedAt: new Date().toISOString(),
     });
   }

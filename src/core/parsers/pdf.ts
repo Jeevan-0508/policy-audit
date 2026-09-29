@@ -42,7 +42,6 @@ export async function parsePdfFile(file: File, documentId: string): Promise<{ ch
       documentId,
       documentName: file.name,
       page: pageNum,
-      baseConfidence: 0.9,
     });
     allChunks.push(...pageChunks);
   }

@@ -38,7 +38,7 @@ export function Evidence() {
                 {e.page ? ` \u00b7 p.${e.page}` : ''}
                 {e.section ? ` \u00b7 ${e.section}` : ''}
               </div>
-              <div className="mono text-2xs text-fg-mute">conf {(e.confidence * 100).toFixed(0)}%</div>
+              <div className="mono text-2xs text-fg-mute">{e.classificationMethod} rule match</div>
             </div>
             <div className="text-sm text-fg">&ldquo;{e.keyStatement}&rdquo;</div>
             <div className="flex gap-1 mt-2 flex-wrap">

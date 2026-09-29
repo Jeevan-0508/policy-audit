@@ -22,7 +22,6 @@ interface ChunkParagraphsOptions {
   documentId: string;
   documentName: string;
   page?: number;
-  baseConfidence?: number;
 }
 
 /** Splits raw extracted text into paragraph-level EvidenceChunks, tracking
@@ -47,7 +46,6 @@ export function chunkParagraphs(rawText: string, opts: ChunkParagraphsOptions): 
       section: currentSection,
       paragraphRef: `p${paragraphIndex}`,
       text,
-      extractionConfidence: opts.baseConfidence ?? 0.92,
       extractedAt: new Date().toISOString(),
     });
   };

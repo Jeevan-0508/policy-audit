@@ -20,22 +20,6 @@ const THRESHOLD_EXCEPTION = /\b(below|under|less than|up to)\b.{0,20}[\$\u20ac\u
 const PROHIBITS = /\bmust not\b|\bshall not\b|\bprohibited\b|\bnot permitted\b|\bforbidden\b/i;
 const PERMITS = /\bmay\b|\ballows?\b|\benables?\b|\bpermitted\b|\bcan access\b|\bhas access\b/i;
 
-function significantTokens(text: string): Set<string> {
-  return new Set(
-    text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, ' ')
-      .split(/\s+/)
-      .filter((w) => w.length > 4)
-  );
-}
-
-function overlapCount(a: Set<string>, b: Set<string>): number {
-  let n = 0;
-  for (const t of a) if (b.has(t)) n += 1;
-  return n;
-}
-
 interface Rule {
   topic: ControlId;
   matches: (a: Evidence, b: Evidence) => boolean;
@@ -93,8 +77,6 @@ export function detectContradictions(evidence: Evidence[]): Contradiction[] {
         const pairKey = [a.id, b.id].sort().join('|');
         if (seenPairs.has(pairKey)) continue;
         if (!rule.matches(a, b)) continue;
-        const overlap = overlapCount(significantTokens(a.text), significantTokens(b.text));
-        const confidence = Math.min(0.97, 0.72 + overlap * 0.04);
         seenPairs.add(pairKey);
         results.push({
           id: nextId('CX'),
@@ -103,7 +85,6 @@ export function detectContradictions(evidence: Evidence[]): Contradiction[] {
           documentA: { documentId: a.documentId, documentName: a.documentName, page: a.page, section: a.section, statement: a.keyStatement },
           documentB: { documentId: b.documentId, documentName: b.documentName, page: b.page, section: b.section, statement: b.keyStatement },
           conflictDescription: rule.describe(a, b),
-          confidence: Math.round(confidence * 100) / 100,
         });
       }
     }
@@ -129,7 +110,6 @@ export function contradictionsToFindings(contradictions: Contradiction[]): Findi
     riskFactors: {
       severityWeight: 0.9,
       applicabilityWeight: 1,
-      evidenceConfidence: c.confidence,
       controlCriticality: controlCriticality(c.topic),
       impactWeight: controlCriticality(c.topic),
       exploitabilityWeight: 0.3,
@@ -137,7 +117,6 @@ export function contradictionsToFindings(contradictions: Contradiction[]): Findi
       frameworksAffectedCount: 1,
       hasConflictingEvidence: true,
     },
-    confidence: c.confidence,
     sourceDocumentIds: [c.documentA.documentId, c.documentB.documentId],
     reasoning: c.conflictDescription,
     remediation: `Reconcile the conflicting statements: "${c.documentA.statement}" (${c.documentA.documentName}) vs. "${c.documentB.statement}" (${c.documentB.documentName}). Decide which governs and update the other document.`,

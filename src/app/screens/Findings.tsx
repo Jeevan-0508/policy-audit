@@ -67,11 +67,11 @@ function FindingDetail({ finding, onClose }: { finding: Finding; onClose: () => 
 
         <div className="grid grid-cols-2 gap-3 text-sm border-t border-line pt-4">
           <div>
-            <div className="text-2xs uppercase text-fg-mute mono">Confidence</div>
-            <div>{Math.round(finding.confidence * 100)}%</div>
+            <div className="text-2xs uppercase text-fg-mute mono">Assessment basis</div>
+            <div>Deterministic rule and keyword matches</div>
           </div>
           <div>
-            <div className="text-2xs uppercase text-fg-mute mono">Risk Score</div>
+            <div className="text-2xs uppercase text-fg-mute mono">Risk Priority Index</div>
             <div>
               {finding.riskScore} / 100{' '}
               <span className="text-2xs text-fg-mute">
@@ -109,7 +109,7 @@ export function Findings() {
   return (
     <div className="p-8">
       <h1 className="text-xl font-semibold mb-1">Findings</h1>
-      <p className="text-sm text-fg-dim mb-6">{result.findings.length} findings, sorted by risk score. Click a row for full evidence and remediation.</p>
+      <p className="text-sm text-fg-dim mb-6">{result.findings.length} findings, sorted by a deterministic risk-priority index. The index is not a probability or a prediction of legal non-compliance. Click a row for source evidence and remediation.</p>
 
       <div className="border border-line rounded-md bg-ink-800 overflow-hidden">
         <table className="w-full text-sm">

@@ -52,7 +52,6 @@ function chunksFromParsed(parsed: unknown, documentId: string, documentName: str
       section: topKey,
       paragraphRef: topKey,
       text: lines.join('\n'),
-      extractionConfidence: 0.98,
       extractedAt: new Date().toISOString(),
     });
   }
