@@ -4,9 +4,11 @@ import { controlCriticality } from './severity';
 import { computeRiskScore, severityFromScore } from './severity';
 
 /**
- * Policy -> implementation gap engine (spec section 16) — the primary demo.
+ * Policy/configuration conflict candidate rules (spec section 16) — the primary demo.
  * Deterministically compares prohibition language in policy-type evidence
- * against access grants found in configuration evidence (YAML/JSON), e.g.:
+ * against access grants found in configuration evidence (YAML/JSON). A match
+ * is a lead for human review, not proof that the statements refer to the same
+ * resource, that the policy is current, or that the grant is unauthorized, e.g.:
  *
  *   Policy:  "Agents must not access production customer data."
  *   Config:  tools: [production_customer_db]  permissions.production_customer_db.access: read
@@ -97,15 +99,11 @@ export function detectImplementationGaps(evidence: Evidence[]): Finding[] {
       if (seen.has(key)) continue;
       seen.add(key);
 
-      const confidence = Math.min(0.96, 0.65 + overlap * 0.12);
-      // A policy/implementation gap is, by construction, an unauthorized
-      // data-access path that nobody caught — it is scored at the top of
-      // both criticality inputs deliberately (spec section 16's example is
-      // CRITICAL, not HIGH, because the exposure is live, not theoretical).
+      // Keep prioritization inputs explicit. The textual match is only a
+      // candidate conflict and does not establish a live unauthorized path.
       const riskFactors = {
         severityWeight: 1,
         applicabilityWeight: 1,
-        evidenceConfidence: confidence,
         controlCriticality: Math.max(controlCriticality('agent-least-privilege'), controlCriticality('data-leakage-prevention')),
         impactWeight: 1,
         exploitabilityWeight: 0.95,
@@ -123,14 +121,13 @@ export function detectImplementationGaps(evidence: Evidence[]): Finding[] {
         requirementIds: ['REQ-AGENT-PRIV-001'],
         controlId: 'agent-least-privilege',
         status: 'PARTIAL',
-        title: `Policy vs. implementation conflict: "${prohibition.phrase}" vs. granted access`,
+        title: `Potential policy/configuration conflict: "${prohibition.phrase}" vs. granted access`,
         evidenceIds: [prohibition.evidence.id, grant.evidence.id],
         missingElements: [`Revoke or justify "${grant.level}" access to ${grant.resource}`],
         riskScore,
         riskFactors,
-        confidence: Math.round(confidence * 100) / 100,
         sourceDocumentIds: [prohibition.evidence.documentId, grant.evidence.documentId],
-        reasoning: `Policy statement in ${prohibition.evidence.documentName} prohibits "${prohibition.phrase}", but ${grant.evidence.documentName} grants "${grant.level}" access to "${grant.resource}", which shares terms with the prohibited resource.`,
+        reasoning: `A rule matched the policy phrase "${prohibition.phrase}" in ${prohibition.evidence.documentName} with a "${grant.level}" access entry for "${grant.resource}" in ${grant.evidence.documentName} because their resource terms overlap. Review whether these refer to the same resource, whether the policy is current and applicable, and whether the access is authorized.`,
         remediation: `Remove or restrict the "${grant.level}" permission on "${grant.resource}" in ${grant.evidence.documentName}, or update the policy in ${prohibition.evidence.documentName} if the access is intentional and reviewed.`,
         createdAt: new Date().toISOString(),
       });

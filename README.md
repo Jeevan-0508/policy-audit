@@ -37,8 +37,9 @@ Regulation -> Requirement -> Control Objective -> Technical Expectation
 
 Every requirement in the knowledge base carries: framework, reference, control objective, expected
 evidence, technical expectations, organizational expectations, and related requirements across other
-frameworks. Every piece of evidence carries: document, page/section, extracted statement, confidence,
-and a document hash. Every finding traces back to both.
+frameworks. Every piece of evidence carries document and page/section provenance and its extracted
+statement. Deterministic keyword and pattern matches are shown as rule matches, not confidence
+probabilities or legal sufficiency judgments. Every finding traces back to its source evidence.
 
 ## Architecture
 

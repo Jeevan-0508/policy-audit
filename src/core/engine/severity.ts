@@ -5,11 +5,10 @@ import type { RiskFactors, Severity } from '../types';
  * score" — every input and weight is named here and surfaced verbatim in
  * the UI's Methodology panel (see app/screens/Reports.tsx).
  *
- * riskScore (0-100) =
+ * riskScore (0-100) = weighted priority index, scaled from a maximum raw weight of 90:
  *   30 * severityWeight              (how bad is this class of gap, 0-1)
  * + 20 * controlCriticality          (how load-bearing is the control, 0-1)
  * + 15 * impactWeight                (blast radius if exploited/triggered, 0-1)
- * + 10 * (1 - evidenceConfidence)    (uncertainty in what evidence exists)
  * + 10 * frameworksAffectedNorm      (min(frameworksAffected, 4) / 4)
  * + 10 * affectedSystemsNorm         (min(affectedSystems, 5) / 5)
  * +  5 * conflictBonus               (1 if contradicting evidence exists, else 0)
@@ -21,7 +20,6 @@ export const RISK_WEIGHTS = {
   severity: 30,
   controlCriticality: 20,
   impact: 15,
-  evidenceUncertainty: 10,
   frameworksAffected: 10,
   affectedSystems: 10,
   conflictBonus: 5,
@@ -32,16 +30,15 @@ export function computeRiskScore(f: RiskFactors): number {
   const systemsNorm = Math.min(f.affectedSystemsCount, 5) / 5;
   const impact = Math.max(f.impactWeight, f.exploitabilityWeight);
 
-  const score =
+  const rawScore =
     RISK_WEIGHTS.severity * f.severityWeight +
     RISK_WEIGHTS.controlCriticality * f.controlCriticality +
     RISK_WEIGHTS.impact * impact +
-    RISK_WEIGHTS.evidenceUncertainty * (1 - f.evidenceConfidence) +
     RISK_WEIGHTS.frameworksAffected * frameworksNorm +
     RISK_WEIGHTS.affectedSystems * systemsNorm +
     RISK_WEIGHTS.conflictBonus * (f.hasConflictingEvidence ? 1 : 0);
 
-  return Math.round(Math.min(100, score * f.applicabilityWeight));
+  return Math.round(Math.min(100, (rawScore / 90) * 100 * f.applicabilityWeight));
 }
 
 export function severityFromScore(score: number): Severity {

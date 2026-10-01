@@ -18,7 +18,7 @@ export function Contradictions() {
     return (
       <div className="p-8">
         <h1 className="text-xl font-semibold mb-6">Contradictions</h1>
-        <EmptyState title="No contradictions detected" body="The corpus did not contain any document pairs matching the conservative contradiction rules. This is a good sign, not a lack of analysis." />
+        <EmptyState title="No rule-matched conflicts found" body="No document pairs matched the current contradiction rules. This does not establish that the corpus contains no contradictions." />
       </div>
     );
   }
@@ -26,7 +26,7 @@ export function Contradictions() {
   return (
     <div className="p-8">
       <h1 className="text-xl font-semibold mb-1">Contradictions</h1>
-      <p className="text-sm text-fg-dim mb-6">{result.contradictions.length} detected. Every one requires cross-document topic overlap plus an opposing-scope signal &mdash; not just differing wording.</p>
+      <p className="text-sm text-fg-dim mb-6">{result.contradictions.length} candidate conflict(s) matched deterministic cross-document rules. Review the cited statements; a rule match is not proof that the documents truly conflict.</p>
 
       <div className="space-y-4">
         {result.contradictions.map((c) => (
@@ -34,7 +34,7 @@ export function Contradictions() {
             <div className="flex items-center gap-2 mb-3">
               <SeverityBadge severity={c.severity} />
               <span className="mono text-2xs text-fg-mute">{c.topic}</span>
-              <span className="mono text-2xs text-fg-mute">conf {Math.round(c.confidence * 100)}%</span>
+              <span className="mono text-2xs text-fg-mute">deterministic rule match</span>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="border border-line rounded p-3">

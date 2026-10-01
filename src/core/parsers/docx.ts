@@ -5,5 +5,5 @@ export async function parseDocxFile(file: File, documentId: string): Promise<Evi
   const mammoth = await import('mammoth');
   const buf = await file.arrayBuffer();
   const result = await mammoth.extractRawText({ arrayBuffer: buf });
-  return chunkParagraphs(result.value, { documentId, documentName: file.name, baseConfidence: 0.93 });
+  return chunkParagraphs(result.value, { documentId, documentName: file.name });
 }

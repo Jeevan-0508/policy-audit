@@ -24,7 +24,6 @@ export async function parseXlsxFile(file: File, documentId: string): Promise<Evi
         section: sheetName,
         paragraphRef: `row ${idx + 2}`,
         text,
-        extractionConfidence: 0.98,
         extractedAt: new Date().toISOString(),
       });
     });

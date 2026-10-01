@@ -82,14 +82,9 @@ export function buildCoverageFindings(matches: RequirementMatch[]): Finding[] {
     const type = decideFindingType(representative, unmetTechnical, unmetOrganizational);
     const frameworkIds = [...new Set(group.requirements.map((r) => r.framework))] as FrameworkId[];
     const documentIds = [...new Set(group.matchedEvidence.map((e) => e.documentId))];
-    const avgConfidence = group.matchedEvidence.length
-      ? group.matchedEvidence.reduce((s, e) => s + e.confidence, 0) / group.matchedEvidence.length
-      : 0.5;
-
     const riskFactors = {
       severityWeight: group.worstStatus === 'MISSING' ? 0.9 : 0.55,
       applicabilityWeight: 1,
-      evidenceConfidence: avgConfidence,
       controlCriticality: controlCriticality(group.controlId),
       impactWeight: controlCriticality(group.controlId),
       exploitabilityWeight: CONTROLS[group.controlId].category === 'security' || CONTROLS[group.controlId].category === 'agentic' ? 0.7 : 0.2,
@@ -113,7 +108,6 @@ export function buildCoverageFindings(matches: RequirementMatch[]): Finding[] {
       missingElements: [...unmetTechnical, ...unmetOrganizational],
       riskScore,
       riskFactors,
-      confidence: Math.round(avgConfidence * 100) / 100,
       sourceDocumentIds: documentIds,
       reasoning:
         group.worstStatus === 'MISSING'

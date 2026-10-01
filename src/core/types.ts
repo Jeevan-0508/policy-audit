@@ -94,6 +94,9 @@ export interface GovDocument {
   fileType: SupportedFileType;
   sizeBytes: number;
   hash: string;
+  hashAlgorithm: 'SHA-256';
+  dataClass: 'operator_supplied' | 'synthetic_fixture';
+  authenticity: 'unverified';
   uploadedAt: string;
   pageCount?: number;
   /** Set when the injection scanner found instruction-like content in the file. */
@@ -115,7 +118,6 @@ export interface EvidenceChunk {
   section?: string;
   paragraphRef?: string;
   text: string;
-  extractionConfidence: number;
   extractedAt: string;
 }
 
@@ -127,7 +129,6 @@ export interface Evidence extends EvidenceChunk {
   /** Short human-readable statement pulled from the text (the quoted excerpt). */
   keyStatement: string;
   tags: string[];
-  confidence: number;
   classificationMethod: 'deterministic' | 'llm-assisted';
 }
 
@@ -170,7 +171,6 @@ export type RequirementStatus = 'SUPPORTED' | 'PARTIAL' | 'MISSING';
 export interface RiskFactors {
   severityWeight: number;
   applicabilityWeight: number;
-  evidenceConfidence: number;
   controlCriticality: number;
   impactWeight: number;
   exploitabilityWeight: number;
@@ -193,7 +193,6 @@ export interface Finding {
   conflictEvidenceIds?: [string, string];
   riskScore: number;
   riskFactors: RiskFactors;
-  confidence: number;
   sourceDocumentIds: string[];
   reasoning: string;
   remediation: string;
@@ -231,7 +230,6 @@ export interface Contradiction {
   documentA: { documentId: string; documentName: string; page?: number; section?: string; statement: string };
   documentB: { documentId: string; documentName: string; page?: number; section?: string; statement: string };
   conflictDescription: string;
-  confidence: number;
 }
 
 export interface AuditRunStats {

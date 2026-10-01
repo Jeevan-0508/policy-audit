@@ -32,8 +32,8 @@ function extractTags(text: string, fileType: string): string[] {
  * the verdict directly). This is the ONLY function that turns a raw
  * EvidenceChunk into a typed Evidence item used by the finding engine.
  * An LLM provider may call `applyLlmTags` afterwards to add supplementary
- * tags/control hints, but confidence and the base classification always
- * come from here first.
+ * tags/control hints. These deterministic labels are keyword/pattern matches,
+ * not calibrated confidence estimates or judgments of legal sufficiency.
  */
 export function classifyChunk(chunk: EvidenceChunk, fileType: string): Evidence {
   const controlIds = matchControls(chunk.text);
@@ -42,13 +42,6 @@ export function classifyChunk(chunk: EvidenceChunk, fileType: string): Evidence 
   const keyStatement = extractKeyStatement(chunk.text);
   const tags = extractTags(chunk.text, fileType);
 
-  let confidence = 0.55;
-  if (controlIds.length > 0) confidence += 0.15;
-  if (controlIds.length > 1) confidence += 0.05;
-  if (polarity !== 'neutral') confidence += 0.1;
-  if (evidenceType !== 'policy_statement') confidence += 0.05;
-  confidence = Math.min(0.95, confidence) * chunk.extractionConfidence;
-
   return {
     ...chunk,
     evidenceType,
@@ -56,7 +49,6 @@ export function classifyChunk(chunk: EvidenceChunk, fileType: string): Evidence 
     polarity,
     keyStatement,
     tags,
-    confidence: Math.round(confidence * 100) / 100,
     classificationMethod: 'deterministic',
   };
 }
