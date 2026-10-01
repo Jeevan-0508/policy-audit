@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { AuditResult } from '@core/engine/audit';
 import { runAudit } from '@core/engine/audit';
-import { ingestFile, UnsupportedFileError, FileTooLargeError, type IngestResult } from '@core/parsers';
+import { ingestFile, UnsupportedFileError, FileTooLargeError, MAX_FILES_PER_UPLOAD, type IngestResult } from '@core/parsers';
 import { buildDemoFiles } from '@core/demo/corpus';
 import type { FrameworkId } from '@core/types';
 
@@ -34,6 +34,10 @@ export const useAuditStore = create<AuditStore>((set, get) => ({
   addFiles: async (files) => {
     set({ status: 'ingesting' });
     const list = Array.from(files);
+    if (list.length + get().ingested.length > MAX_FILES_PER_UPLOAD) {
+      set({ status: 'idle', uploadErrors: [{ filename: 'Upload', message: `An audit supports at most ${MAX_FILES_PER_UPLOAD} documents. Remove existing documents or reset before adding more.` }] });
+      return;
+    }
     const nextIngested = [...get().ingested];
     const errors: UploadError[] = [];
 
@@ -70,7 +74,7 @@ export const useAuditStore = create<AuditStore>((set, get) => ({
     const files = buildDemoFiles();
     const ingested: IngestResult[] = [];
     for (const file of files) {
-      ingested.push(await ingestFile(file));
+      ingested.push(await ingestFile(file, 'synthetic_fixture'));
     }
     set({ ingested, status: 'auditing' });
     const result = runAudit(ingested, get().selectedFrameworks);

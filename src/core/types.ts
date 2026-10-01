@@ -94,6 +94,9 @@ export interface GovDocument {
   fileType: SupportedFileType;
   sizeBytes: number;
   hash: string;
+  hashAlgorithm: 'SHA-256';
+  dataClass: 'operator_supplied' | 'synthetic_fixture';
+  authenticity: 'unverified';
   uploadedAt: string;
   pageCount?: number;
   /** Set when the injection scanner found instruction-like content in the file. */

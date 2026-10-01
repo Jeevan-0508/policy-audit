@@ -1,6 +1,7 @@
 import { useAuditStore } from '../lib/store';
 import { EmptyState } from '../components/StatCard';
 import { FRAMEWORK_META, CONTROLS } from '@core/frameworks';
+import { governanceExport } from '@core/engine/governanceExport';
 
 const SEVERITY_CLASS: Record<string, string> = {
   CRITICAL: 'severity-critical',
@@ -32,6 +33,14 @@ export function Reports() {
     <div className="p-8 print-page max-w-4xl">
       <div className="flex items-center justify-between mb-1 no-print">
         <h1 className="text-xl font-semibold">Audit Report</h1>
+        <button className="mono text-2xs px-4 py-2 rounded border border-accent text-accent hover:bg-accent/10" onClick={() => {
+          const url = URL.createObjectURL(new Blob([JSON.stringify(governanceExport(result), null, 2)], { type: 'application/json' }));
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'policy-audit-governance.json';
+          anchor.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }}>EXPORT GOVERNANCE METADATA</button>
         <button
           className="mono text-2xs px-4 py-2 rounded border border-accent text-accent hover:bg-accent/10"
           onClick={() => window.print()}
@@ -42,6 +51,8 @@ export function Reports() {
       <p className="text-sm text-fg-dim mb-6 no-print">
         Browser print-to-PDF, no server round trip. Everything below is exactly what the app computed;
         nothing is reformatted for the report.
+        {' '}The JSON handoff contains document hashes, evidence IDs and curated control mappings;
+        it excludes document text and does not establish compliance.
       </p>
 
       <div className="mb-8">

@@ -1,5 +1,5 @@
 import type { EvidenceChunk, GovDocument, SupportedFileType } from '../types';
-import { fnv1aHash, nextId } from '../engine/ids';
+import { nextId } from '../engine/ids';
 import { scanForInjection } from '../security/injection';
 import { parseTextFile } from './text';
 import { parseJsonFile, parseYamlFile } from './structured';
@@ -32,7 +32,7 @@ export class FileTooLargeError extends Error {}
 /** Single entry point for turning a File into provenance-carrying chunks.
  * Every chunk gets injection-scanned before it is handed to the
  * classification layer (spec section 27 — documents are untrusted input). */
-export async function ingestFile(file: File): Promise<IngestResult> {
+export async function ingestFile(file: File, dataClass: GovDocument['dataClass'] = 'operator_supplied'): Promise<IngestResult> {
   if (file.size > MAX_FILE_SIZE_BYTES) {
     throw new FileTooLargeError(`${file.name} exceeds the ${MAX_FILE_SIZE_BYTES / (1024 * 1024)}MB per-file limit`);
   }
@@ -42,8 +42,8 @@ export async function ingestFile(file: File): Promise<IngestResult> {
   }
 
   const documentId = nextId('DOC');
-  const hashSource = await file.slice(0, Math.min(file.size, 1_000_000)).text().catch(() => file.name + file.size);
-  const hash = fnv1aHash(hashSource + file.size);
+  const digest = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
+  const hash = Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
 
   let chunks: EvidenceChunk[] = [];
   let pageCount: number | undefined;
@@ -84,6 +84,9 @@ export async function ingestFile(file: File): Promise<IngestResult> {
     fileType,
     sizeBytes: file.size,
     hash,
+    hashAlgorithm: 'SHA-256',
+    dataClass,
+    authenticity: 'unverified',
     uploadedAt: new Date().toISOString(),
     pageCount,
     injectionFlags,
