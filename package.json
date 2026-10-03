@@ -6,7 +6,6 @@
   "type": "module",
   "description": "POLICY//AUDIT - AI governance document & evidence auditing engine. Regulation -> control -> implementation -> evidence -> gap.",
   "scripts": {
-    "demo:build": "node scripts/generate-nova-demo.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
