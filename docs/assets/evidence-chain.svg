@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 280" role="img" aria-labelledby="title desc">
+  <title id="title">POLICY//AUDIT evidence chain</title>
+  <desc id="desc">Five connected stages: regulation, control, implementation, evidence, and gap.</desc>
+  <rect width="1200" height="280" rx="18" fill="#0b1020"/>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" text-anchor="middle">
+    <g fill="#111c2d" stroke="#38bdf8" stroke-width="2">
+      <rect x="35" y="82" width="180" height="112" rx="12"/><rect x="255" y="82" width="180" height="112" rx="12"/><rect x="475" y="82" width="180" height="112" rx="12"/><rect x="695" y="82" width="180" height="112" rx="12"/><rect x="915" y="82" width="250" height="112" rx="12" stroke="#d6b36a"/>
+    </g>
+    <g fill="#eef5ff" font-size="18" font-weight="700"><text x="125" y="128">REGULATION</text><text x="345" y="128">CONTROL</text><text x="565" y="128">IMPLEMENTATION</text><text x="785" y="128">EVIDENCE</text><text x="1040" y="128">GAP / FINDING</text></g>
+    <g fill="#9fb0c5" font-size="13"><text x="125" y="155">requirement</text><text x="345" y="155">objective</text><text x="565" y="155">policy + config</text><text x="785" y="155">source + hash</text><text x="1040" y="155">risk + action</text></g>
+    <g fill="none" stroke="#8b5cf6" stroke-width="3"><path d="M215 138h40m180 0h40m180 0h40m180 0h40"/></g>
+    <g fill="#8b5cf6"><path d="m247 130 12 8-12 8z"/><path d="m467 130 12 8-12 8z"/><path d="m687 130 12 8-12 8z"/><path d="m907 130 12 8-12 8z"/></g>
+  </g>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" role="img" aria-labelledby="title desc">
+  <title id="title">POLICY//AUDIT evidence chain</title>
+  <desc id="desc">A dark graphite banner showing the path from regulation to control, implementation, evidence, and gap.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080d18"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="0.55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#d6b36a"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1600" height="420" rx="24" fill="url(#bg)"/>
+  <path d="M0 360H1600M0 80H1600" stroke="#243247" stroke-width="1" opacity=".7"/>
+  <path d="M120 302C300 170 420 315 600 205S910 105 1080 220s260-5 400-120" fill="none" stroke="#1d3045" stroke-width="2"/>
+  <path d="M120 302C300 170 420 315 600 205S910 105 1080 220s260-5 400-120" fill="none" stroke="url(#line)" stroke-width="4" opacity=".9" filter="url(#glow)"/>
+  <g fill="#0b1220" stroke="url(#line)" stroke-width="3">
+    <circle cx="120" cy="302" r="14"/><circle cx="380" cy="246" r="14"/><circle cx="600" cy="205" r="14"/><circle cx="820" cy="150" r="14"/><circle cx="1080" cy="220" r="14"/><circle cx="1320" cy="190" r="14"/><circle cx="1520" cy="100" r="14"/>
+  </g>
+  <text x="92" y="112" fill="#38bdf8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" letter-spacing="4">EVIDENCE-LED GOVERNANCE</text>
+  <text x="92" y="178" fill="#eef5ff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="54" font-weight="700">POLICY//AUDIT</text>
+  <text x="95" y="220" fill="#aab8ca" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22">Trace regulation to controls, implementation evidence, and actionable gaps.</text>
+  <g fill="#d7e2f0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" letter-spacing="1">
+    <text x="92" y="388">REGULATION</text><text x="342" y="388">CONTROL</text><text x="545" y="388">IMPLEMENTATION</text><text x="810" y="388">EVIDENCE</text><text x="1060" y="388">FINDING</text><text x="1295" y="388">REMEDIATION</text>
+  </g>
+</svg>

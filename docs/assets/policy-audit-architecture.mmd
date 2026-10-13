@@ -1,0 +1,33 @@
+flowchart LR
+    subgraph INPUT["Local document corpus"]
+        P["PDF · DOCX · XLSX · CSV · JSON · YAML · TXT · MD"]
+    end
+
+    subgraph PARSE["src/core/parsers/"]
+        C["parse + chunk into citable passages"]
+    end
+
+    subgraph MODEL["src/core/frameworks/"]
+        R["requirements + control crosswalk"]
+    end
+
+    subgraph ENGINE["Deterministic audit engine"]
+        M["requirement matching"]
+        V["coverage + severity"]
+        X["contradictions"]
+        G["policy / implementation gaps"]
+        A["agent governance profile"]
+    end
+
+    F["Supported · Partial · Missing · Conflict"]
+    H["Human review + remediation"]
+    L["Optional model tags\nnever a verdict"]
+
+    P --> C --> M
+    R --> M
+    M --> V --> F
+    M --> X --> F
+    M --> G --> F
+    M --> A --> F
+    F --> H
+    L -. append-only .-> M
