@@ -5,6 +5,8 @@
 <p align="center">
   <a href="https://jeevan-0508.github.io/policy-audit/">Open the live product</a> ·
   <a href="#how-it-works">How it works</a> ·
+  <a href="docs/architecture.md">Architecture</a> ·
+  <a href="docs/getting-started.md">Technical docs</a> ·
   <a href="#run-it-locally">Run locally</a>
 </p>
 
