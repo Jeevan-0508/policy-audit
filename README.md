@@ -128,3 +128,15 @@ not part of the shipped build.
 ## License
 
 MIT
+
+
+## What this project demonstrates
+
+- **AI governance implementation** — maps requirements and controls across EU AI Act, ISO/IEC 42001, ISO/IEC 23894, NIST AI RMF, AI security, and agent-governance content.
+- **Evidence-led review** — keeps document passages, source locations, hashes, confidence, and findings connected.
+- **Deterministic decision logic** — separates classification, matching, coverage, contradiction checks, severity, implementation gaps, and agent-governance profiling from any future model enhancement.
+- **Security-aware document handling** — scans untrusted document content for prompt-injection patterns before it can influence the review workflow.
+
+## Maturity and boundaries
+
+This is an independently developed browser application. It is local-only, has no backend or account service, and does not establish legal or regulatory compliance. The framework content is curated and paraphrased, applicability scoping is currently assumed universal, and exportable audit reports are not part of the shipped build. See [limitations](docs/limitations.md), [security](docs/security.md), and [testing](docs/testing.md) before treating the demo as evidence of a broader governance programme.
